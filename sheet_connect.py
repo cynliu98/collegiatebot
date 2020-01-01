@@ -6,12 +6,11 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 
 # If modifying these scopes, delete the file token.pickle.
-SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
+SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
 REG_TEST_ID = '1qQGHKvpmQ7KXiQE5zmOckpn-XzfSO5AFSAd8MI_0trg'
-SAMPLE_RANGE_NAME = 'Class Data!A2:E'
 
 def connect():
     """Shows basic usage of the Sheets API.
@@ -50,6 +49,19 @@ def print_sheet_contents(service):
     else:
         for row in values:
             print (row)
+
+def add_row_to_sheet(service, text):
+    sheet = service.spreadsheets()
+    body = {
+        'majorDimension': 'ROWS',
+        'values': [[text]]
+    }
+    sheet.values().append(spreadsheetId=REG_TEST_ID, 
+                          range='Sheet1',
+                          valueInputOption="USER_ENTERED",
+                          body=body).execute()
+
+    print("updated sheet")
 
 if __name__ == '__main__':
     service = connect()

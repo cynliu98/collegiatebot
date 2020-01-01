@@ -4,27 +4,28 @@ import os
 import discord
 from dotenv import load_dotenv
 from sheet_connect import *
+import re
 
 load_dotenv()
-token = 'NjYxNjU1MDU5MDk1ODc5Njkz.XgulCw.ehY8jPLqbeJvTt86zzjtm0ghc0A'
+service = connect()
+print('connected to google api')
 
 client = discord.Client()
 
 @client.event
 async def on_ready():
     print(f'{client.user} has connected to Discord!')
-    service = connect()
-    print_sheet_contents(service)
 
 @client.event
 async def on_message(message):
-    # we do not want the bot to reply to itself
-    if message.author == client.user:
+    profile = message.content
+    if not re.match('http(s?)://(osu|old).ppy.sh/(u|users)/[^\s]+$', profile):
         return
 
-    # only respond if in spam-bots
-    if message.content.startswith('!hello'):
-        msg = 'Hello {0.author.mention}'.format(message)
-        await message.channel.send(msg)
+    print("found profile link: " + profile)
 
-client.run(token)
+    add_row_to_sheet(service, profile)
+    await message.add_reaction('\N{THUMBS UP SIGN}')
+
+
+client.run(os.environ['BOT_TOKEN'])
