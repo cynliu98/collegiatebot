@@ -10,7 +10,7 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-REG_TEST_ID = '1qQGHKvpmQ7KXiQE5zmOckpn-XzfSO5AFSAd8MI_0trg'
+REG_TEST_ID = '1SCdDXMjHbD0fg7OV_E7q4O6tT62NBoqNc4Wu7Pr-GGc'
 SAMPLE_RANGE_NAME = 'Class Data!A2:E'
 
 def connect():
