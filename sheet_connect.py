@@ -11,7 +11,6 @@ SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 # The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
 REG_TEST_ID = '1SCdDXMjHbD0fg7OV_E7q4O6tT62NBoqNc4Wu7Pr-GGc'
-SAMPLE_RANGE_NAME = 'Class Data!A2:E'
 
 def connect():
     """Shows basic usage of the Sheets API.
@@ -50,6 +49,19 @@ def print_sheet_contents(service):
     else:
         for row in values:
             print (row)
+
+def add_row_to_sheet(service, text):
+    sheet = service.spreadsheets()
+    body = {
+        'majorDimension': 'ROWS',
+        'values': [[text]]
+    }
+    sheet.values().append(spreadsheetId=REG_TEST_ID, 
+                          range='Sheet1',
+                          valueInputOption="USER_ENTERED",
+                          body=body).execute()
+
+    print("updated sheet")
 
 if __name__ == '__main__':
     service = connect()
