@@ -9,8 +9,7 @@ from google.auth.transport.requests import Request
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
 
 # The ID and range of a sample spreadsheet.
-SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
-REG_TEST_ID = '1SCdDXMjHbD0fg7OV_E7q4O6tT62NBoqNc4Wu7Pr-GGc'
+# SAMPLE_SPREADSHEET_ID = '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms'
 
 def connect():
     """Shows basic usage of the Sheets API.
@@ -38,25 +37,23 @@ def connect():
     service = build('sheets', 'v4', credentials=creds)
     return service
 
-def print_sheet_contents(service):
+def print_sheet_contents(service, sheetid, sheetname):
     # Call the Sheets API
     sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=REG_TEST_ID, range='Sheet1').execute()
+    result = sheet.values().get(spreadsheetId=sheetid, range=sheetname).execute()
     values = result.get('values', [])
 
     if not values:
         print('No data found.')
-    else:
-        for row in values:
-            print (row)
+    return values
 
-def add_row_to_sheet(service, text):
+def add_row_to_sheet(service, profile, university, sheetid):
     sheet = service.spreadsheets()
     body = {
         'majorDimension': 'ROWS',
-        'values': [[text]]
+        'values': [[profile, university]]
     }
-    sheet.values().append(spreadsheetId=REG_TEST_ID, 
+    sheet.values().append(spreadsheetId=sheetid, 
                           range='Sheet1',
                           valueInputOption="USER_ENTERED",
                           body=body).execute()
